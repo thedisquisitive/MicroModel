@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <stdexcept>
+#include <cassert>
 
 namespace micromodel {
 
@@ -21,6 +22,7 @@ void CPU_4004::reset() {
     carry = false;
     registers.fill(0);
     call_stack.fill(0);
+    isRunning = false;
 }
 
 void CPU_4004::tick() {
@@ -30,6 +32,7 @@ void CPU_4004::tick() {
 void CPU_4004::step() {
     if (!bus) throw std::runtime_error("CPU not attached to a bus.");
     uint8_t opcode = fetch_byte();
+    std::cout << ">>> Fetched opcode: 0x" << std::hex << (int)opcode << " at PC=" << std::hex << (pc - 1) << "\n";
     execute_instruction(opcode);
 }
 
@@ -45,6 +48,13 @@ void CPU_4004::execute_instruction(uint8_t opcode) {
         return;
     }
 
+    if (opcode == 0xFF) { // HLT -- fantasy command, the 4004 did not have a HLT function
+        Stop();
+        isRunning = false;
+        std::cout << "HLT - HALT OPERATIONS\n";
+        return;
+    }
+
     if ((opcode & 0xF0) == 0x20) {
         uint8_t reg = opcode & 0x0F;
         registers[reg] = (registers[reg] + 1) & 0x0F;
@@ -54,7 +64,7 @@ void CPU_4004::execute_instruction(uint8_t opcode) {
 
     if ((opcode & 0xF0) == 0xF0) {
         uint8_t reg = opcode & 0x0F;
-        uint8_t imm = fetch_byte() & 0x0F;
+        uint8_t imm = fetch_byte();
         registers[reg] = imm;
         std::cout << "LDM R" << (int)reg << ", 0x" << std::hex << (int)imm << "\n";
         return;
@@ -70,6 +80,50 @@ void CPU_4004::execute_instruction(uint8_t opcode) {
                   << std::dec << "\n";
         return;
     }
+
+    // LD Rx → ACC
+    if ((opcode & 0xF0) == 0x90) {
+        uint8_t r = opcode & 0x0F;
+        acc = registers[r];
+        std::cout << "LD R" << (int)r << " → ACC = " << (int)acc << "\n";
+        return;
+    }
+
+    if (opcode == 0xE8) {
+        assert(bus != nullptr);
+        std::cout << "[CPU] WRR start\n";
+    
+        if (!bus) {
+            std::cerr << "[WRR] Bus is null!\n";
+            throw std::runtime_error("WRR: No bus attached");
+        }
+    
+        try {
+            bus->write(0xF000, acc);
+            std::cout << "[CPU] WRR done: 0xF000 = " << (int)acc << " ('" 
+                      << static_cast<char>(acc) << "')\n";
+        } catch (const std::exception& ex) {
+            std::cerr << "[WRR] Exception during bus write: " << ex.what() << "\n";
+        }
+    
+        return;
+    }
+
+    if ((opcode & 0xF0) == 0x40) {
+        uint8_t target = opcode & 0x0F;
+        uint16_t returnAddr = pc; // Return point is *after* this CALL
+        push_stack(returnAddr);
+    
+        pc = target * 8;
+        std::cout << "CALL 0x" << std::hex << (int)(target * 8)
+                  << " ← pushed return 0x" << returnAddr << "\n";
+        return;
+    }
+    
+    
+
+    
+    
 
     std::ostringstream oss;
     oss << "Unimplemented opcode: 0x" << std::hex << static_cast<int>(opcode);

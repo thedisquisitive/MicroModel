@@ -1,6 +1,8 @@
 #include "MicroVM.hpp"
 #include "RAMDevice.hpp"
+#include "BIOSDevice.hpp"
 #include "CPU_4004.hpp"
+#include "SerialDevice.hpp"
 
 #include <iostream>
 #include <memory>
@@ -12,36 +14,45 @@ using namespace micromodel;
 int main() {
     MicroVM vm;
 
-    auto ram = std::make_shared<RAMDevice>(0x0000, 0x0100); // 256 bytes
+    auto ram = std::make_shared<RAMDevice>(0x0100, 0x1200); // 256 bytes
     auto cpu = std::make_shared<CPU_4004>();
+    auto serial = std::make_shared<SerialDevice>(0xF000); 
 
-    vm.add_device(ram);
+    std::vector<uint8_t> bios_rom = {
+        0x43,       // CALL 0x18
+        0xFF,       // HLT (after return)
+    
+        // Subroutine at 0x18:
+        0x00, 0x00, 0x00, 0x00, // Padding
+        0x00, 0x00, 0x00, 0x00, // Padding
+        0xF0, 0x4A,             // 0x18: LDM R0, 0x4A
+        0x90,                   //       LD R0 → ACC
+        0xE8,                   //       WRR
+        0xE0                    //       BBL 0x0 → Return
+    };
+    
+    
+    auto bios = std::make_shared<BIOSDevice>(0x0000, bios_rom);
+    
+    vm.add_device(bios);
+    vm.add_device(serial);
+    //vm.add_device(ram);
     vm.set_cpu(cpu);
-
     vm.reset();
 
-    // Simple ROM program
-    // F4 0B    → LDM R4, 0xB
-    // 20       → INC R0
-    // E7       → BBL 0x7 (return to caller)
-    std::vector<uint8_t> rom = {
-        0xF4, 0x0B, // LDM R4, 0xB
-        0x20,       // INC R0
-        0xE7        // BBL 0x7
-    };
-
-    // Load ROM into memory
-    auto bus = vm.get_bus();
-    for (size_t i = 0; i < rom.size(); ++i) {
-        bus->write(0x0000 + i, rom[i]);
+    std::cout << "BIOS contents:\n";
+    for (size_t i = 0; i < bios_rom.size(); ++i) {
+        std::cout << "[" << std::setw(4) << std::setfill('0') << std::hex << i << "] "
+                << std::setw(2) << std::hex << (int)bios_rom[i] << "\n";
     }
-
-    // Simulate subroutine call so BBL works
-    cpu->push_stack(0x0042);
+    
+    auto bus = vm.get_bus();
+    bus->write(0xF000, 0x41);  // Should go to serial and print 'A'
 
     std::cout << "Starting VM...\n\n";
-    for (int i = 0; i < 3; ++i) {
-        vm.step();
+    cpu->Start();
+    while (cpu->Running()) {
+        cpu->step();
     }
 
     std::cout << "\nVM halted.\n";

@@ -13,6 +13,12 @@ public:
     virtual void step() = 0;
     virtual void tick() {}
     virtual void reset() {}
+
+    bool isRunning = false;
+
+    virtual bool Running() { return isRunning; }
+    virtual void Start() { isRunning = true; }
+    virtual void Stop() { isRunning = false; }
 };
 
 }

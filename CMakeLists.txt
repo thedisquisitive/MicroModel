@@ -9,6 +9,8 @@ add_subdirectory(Bus)
 add_subdirectory(Memory)
 add_subdirectory(CPU)
 add_subdirectory(MicroVM)
+add_subdirectory(IO)
+add_subdirectory(tests)
 
 # Main program (optional, remove if you're just using tests)
 add_executable(micromodel main.cpp)
@@ -17,8 +19,10 @@ target_link_libraries(micromodel
     micromodel_cpu
     micromodel_memory
     micromodel_bus
+    micromodel_io
 )
 
 # Tests
-#enable_testing()
-#add_subdirectory(tests)
+enable_testing()
+
+add_test(NAME all_tests COMMAND micromodel_tests)

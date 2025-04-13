@@ -1,5 +1,6 @@
 add_library(micromodel_memory STATIC
     RAMDevice.cpp
+    BIOSDevice.cpp
 )
 
 target_include_directories(micromodel_memory PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

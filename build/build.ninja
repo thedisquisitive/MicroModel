@@ -47,13 +47,13 @@ cmake_ninja_workdir = C$:/Projects/MicroModel/build/
 #############################################
 # Order-only phony target for micromodel
 
-build cmake_object_order_depends_target_micromodel: phony || cmake_object_order_depends_target_micromodel_bus cmake_object_order_depends_target_micromodel_cpu cmake_object_order_depends_target_micromodel_memory cmake_object_order_depends_target_micromodel_vm
+build cmake_object_order_depends_target_micromodel: phony || cmake_object_order_depends_target_micromodel_bus cmake_object_order_depends_target_micromodel_cpu cmake_object_order_depends_target_micromodel_io cmake_object_order_depends_target_micromodel_memory cmake_object_order_depends_target_micromodel_vm
 
 build CMakeFiles/micromodel.dir/main.cpp.obj: CXX_COMPILER__micromodel_unscanned_Debug C$:/Projects/MicroModel/main.cpp || cmake_object_order_depends_target_micromodel
   CONFIG = Debug
   DEP_FILE = CMakeFiles\micromodel.dir\main.cpp.obj.d
   FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
-  INCLUDES = -IC:/Projects/MicroModel/MicroVM -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/Bus
+  INCLUDES = -IC:/Projects/MicroModel/MicroVM -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/Bus -IC:/Projects/MicroModel/IO
   OBJECT_DIR = CMakeFiles\micromodel.dir
   OBJECT_FILE_DIR = CMakeFiles\micromodel.dir
   TARGET_COMPILE_PDB = CMakeFiles\micromodel.dir\
@@ -67,11 +67,11 @@ build CMakeFiles/micromodel.dir/main.cpp.obj: CXX_COMPILER__micromodel_unscanned
 #############################################
 # Link the executable micromodel.exe
 
-build micromodel.exe: CXX_EXECUTABLE_LINKER__micromodel_Debug CMakeFiles/micromodel.dir/main.cpp.obj | MicroVM/micromodel_vm.lib CPU/micromodel_cpu.lib Memory/micromodel_memory.lib Bus/micromodel_bus.lib || Bus/micromodel_bus.lib CPU/micromodel_cpu.lib Memory/micromodel_memory.lib MicroVM/micromodel_vm.lib
+build micromodel.exe: CXX_EXECUTABLE_LINKER__micromodel_Debug CMakeFiles/micromodel.dir/main.cpp.obj | MicroVM/micromodel_vm.lib CPU/micromodel_cpu.lib Memory/micromodel_memory.lib Bus/micromodel_bus.lib IO/micromodel_io.lib Bus/micromodel_bus.lib || Bus/micromodel_bus.lib CPU/micromodel_cpu.lib IO/micromodel_io.lib Memory/micromodel_memory.lib MicroVM/micromodel_vm.lib
   CONFIG = Debug
   FLAGS = -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
   LINK_FLAGS = -Xlinker /subsystem:console -fuse-ld=lld-link
-  LINK_LIBRARIES = MicroVM/micromodel_vm.lib  CPU/micromodel_cpu.lib  Memory/micromodel_memory.lib  Bus/micromodel_bus.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames
+  LINK_LIBRARIES = MicroVM/micromodel_vm.lib  CPU/micromodel_cpu.lib  Memory/micromodel_memory.lib  Bus/micromodel_bus.lib  IO/micromodel_io.lib  Bus/micromodel_bus.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames
   OBJECT_DIR = CMakeFiles\micromodel.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -79,6 +79,18 @@ build micromodel.exe: CXX_EXECUTABLE_LINKER__micromodel_Debug CMakeFiles/micromo
   TARGET_FILE = micromodel.exe
   TARGET_IMPLIB = micromodel.lib
   TARGET_PDB = micromodel.pdb
+
+
+#############################################
+# Utility command for test
+
+build CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build test: phony CMakeFiles/test.util
 
 
 #############################################
@@ -148,6 +160,18 @@ build Bus/micromodel_bus.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_bus_Debug Bu
 
 
 #############################################
+# Utility command for test
+
+build Bus/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\Bus && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build Bus/test: phony Bus/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build Bus/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -194,6 +218,16 @@ build Memory/CMakeFiles/micromodel_memory.dir/RAMDevice.cpp.obj: CXX_COMPILER__m
   TARGET_COMPILE_PDB = Memory\CMakeFiles\micromodel_memory.dir\micromodel_memory.pdb
   TARGET_PDB = Memory\micromodel_memory.pdb
 
+build Memory/CMakeFiles/micromodel_memory.dir/BIOSDevice.cpp.obj: CXX_COMPILER__micromodel_memory_unscanned_Debug C$:/Projects/MicroModel/Memory/BIOSDevice.cpp || cmake_object_order_depends_target_micromodel_memory
+  CONFIG = Debug
+  DEP_FILE = Memory\CMakeFiles\micromodel_memory.dir\BIOSDevice.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/Bus
+  OBJECT_DIR = Memory\CMakeFiles\micromodel_memory.dir
+  OBJECT_FILE_DIR = Memory\CMakeFiles\micromodel_memory.dir
+  TARGET_COMPILE_PDB = Memory\CMakeFiles\micromodel_memory.dir\micromodel_memory.pdb
+  TARGET_PDB = Memory\micromodel_memory.pdb
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target micromodel_memory
@@ -202,7 +236,7 @@ build Memory/CMakeFiles/micromodel_memory.dir/RAMDevice.cpp.obj: CXX_COMPILER__m
 #############################################
 # Link the static library Memory\micromodel_memory.lib
 
-build Memory/micromodel_memory.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_memory_Debug Memory/CMakeFiles/micromodel_memory.dir/RAMDevice.cpp.obj || Bus/micromodel_bus.lib
+build Memory/micromodel_memory.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_memory_Debug Memory/CMakeFiles/micromodel_memory.dir/RAMDevice.cpp.obj Memory/CMakeFiles/micromodel_memory.dir/BIOSDevice.cpp.obj || Bus/micromodel_bus.lib
   CONFIG = Debug
   LANGUAGE_COMPILE_FLAGS = -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
   OBJECT_DIR = Memory\CMakeFiles\micromodel_memory.dir
@@ -211,6 +245,18 @@ build Memory/micromodel_memory.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_memory
   TARGET_COMPILE_PDB = Memory\CMakeFiles\micromodel_memory.dir\micromodel_memory.pdb
   TARGET_FILE = Memory\micromodel_memory.lib
   TARGET_PDB = Memory\micromodel_memory.pdb
+
+
+#############################################
+# Utility command for test
+
+build Memory/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\Memory && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build Memory/test: phony Memory/CMakeFiles/test.util
 
 
 #############################################
@@ -280,6 +326,18 @@ build CPU/micromodel_cpu.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_cpu_Debug CP
 
 
 #############################################
+# Utility command for test
+
+build CPU/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\CPU && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build CPU/test: phony CPU/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build CPU/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -346,6 +404,18 @@ build MicroVM/micromodel_vm.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_vm_Debug 
 
 
 #############################################
+# Utility command for test
+
+build MicroVM/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\MicroVM && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build MicroVM/test: phony MicroVM/CMakeFiles/test.util
+
+
+#############################################
 # Utility command for edit_cache
 
 build MicroVM/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
@@ -369,6 +439,205 @@ build MicroVM/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 build MicroVM/rebuild_cache: phony MicroVM/CMakeFiles/rebuild_cache.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Projects/MicroModel/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target micromodel_io
+
+
+#############################################
+# Order-only phony target for micromodel_io
+
+build cmake_object_order_depends_target_micromodel_io: phony || cmake_object_order_depends_target_micromodel_bus
+
+build IO/CMakeFiles/micromodel_io.dir/SerialDevice.cpp.obj: CXX_COMPILER__micromodel_io_unscanned_Debug C$:/Projects/MicroModel/IO/SerialDevice.cpp || cmake_object_order_depends_target_micromodel_io
+  CONFIG = Debug
+  DEP_FILE = IO\CMakeFiles\micromodel_io.dir\SerialDevice.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/IO -IC:/Projects/MicroModel/Bus
+  OBJECT_DIR = IO\CMakeFiles\micromodel_io.dir
+  OBJECT_FILE_DIR = IO\CMakeFiles\micromodel_io.dir
+  TARGET_COMPILE_PDB = IO\CMakeFiles\micromodel_io.dir\micromodel_io.pdb
+  TARGET_PDB = IO\micromodel_io.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target micromodel_io
+
+
+#############################################
+# Link the static library IO\micromodel_io.lib
+
+build IO/micromodel_io.lib: CXX_STATIC_LIBRARY_LINKER__micromodel_io_Debug IO/CMakeFiles/micromodel_io.dir/SerialDevice.cpp.obj || Bus/micromodel_bus.lib
+  CONFIG = Debug
+  LANGUAGE_COMPILE_FLAGS = -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  OBJECT_DIR = IO\CMakeFiles\micromodel_io.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = IO\CMakeFiles\micromodel_io.dir\micromodel_io.pdb
+  TARGET_FILE = IO\micromodel_io.lib
+  TARGET_PDB = IO\micromodel_io.pdb
+
+
+#############################################
+# Utility command for test
+
+build IO/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\IO && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build IO/test: phony IO/CMakeFiles/test.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build IO/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\IO && C:\CMake\bin\cmake-gui.exe -SC:\Projects\MicroModel -BC:\Projects\MicroModel\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build IO/edit_cache: phony IO/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build IO/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\IO && C:\CMake\bin\cmake.exe --regenerate-during-build -SC:\Projects\MicroModel -BC:\Projects\MicroModel\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build IO/rebuild_cache: phony IO/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Projects/MicroModel/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target micromodel_tests
+
+
+#############################################
+# Order-only phony target for micromodel_tests
+
+build cmake_object_order_depends_target_micromodel_tests: phony || cmake_object_order_depends_target_micromodel_bus cmake_object_order_depends_target_micromodel_cpu cmake_object_order_depends_target_micromodel_memory
+
+build tests/CMakeFiles/micromodel_tests.dir/test_bus.cpp.obj: CXX_COMPILER__micromodel_tests_unscanned_Debug C$:/Projects/MicroModel/tests/test_bus.cpp || cmake_object_order_depends_target_micromodel_tests
+  CONFIG = Debug
+  DEP_FILE = tests\CMakeFiles\micromodel_tests.dir\test_bus.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/Bus -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Devices -IC:/Projects/MicroModel/IO -IC:/Projects/MicroModel/tests
+  OBJECT_DIR = tests\CMakeFiles\micromodel_tests.dir
+  OBJECT_FILE_DIR = tests\CMakeFiles\micromodel_tests.dir
+  TARGET_COMPILE_PDB = tests\CMakeFiles\micromodel_tests.dir\
+  TARGET_PDB = tests\micromodel_tests.pdb
+
+build tests/CMakeFiles/micromodel_tests.dir/test_ram.cpp.obj: CXX_COMPILER__micromodel_tests_unscanned_Debug C$:/Projects/MicroModel/tests/test_ram.cpp || cmake_object_order_depends_target_micromodel_tests
+  CONFIG = Debug
+  DEP_FILE = tests\CMakeFiles\micromodel_tests.dir\test_ram.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/Bus -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Devices -IC:/Projects/MicroModel/IO -IC:/Projects/MicroModel/tests
+  OBJECT_DIR = tests\CMakeFiles\micromodel_tests.dir
+  OBJECT_FILE_DIR = tests\CMakeFiles\micromodel_tests.dir
+  TARGET_COMPILE_PDB = tests\CMakeFiles\micromodel_tests.dir\
+  TARGET_PDB = tests\micromodel_tests.pdb
+
+build tests/CMakeFiles/micromodel_tests.dir/test_cpu.cpp.obj: CXX_COMPILER__micromodel_tests_unscanned_Debug C$:/Projects/MicroModel/tests/test_cpu.cpp || cmake_object_order_depends_target_micromodel_tests
+  CONFIG = Debug
+  DEP_FILE = tests\CMakeFiles\micromodel_tests.dir\test_cpu.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/Bus -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Devices -IC:/Projects/MicroModel/IO -IC:/Projects/MicroModel/tests
+  OBJECT_DIR = tests\CMakeFiles\micromodel_tests.dir
+  OBJECT_FILE_DIR = tests\CMakeFiles\micromodel_tests.dir
+  TARGET_COMPILE_PDB = tests\CMakeFiles\micromodel_tests.dir\
+  TARGET_PDB = tests\micromodel_tests.pdb
+
+build tests/CMakeFiles/micromodel_tests.dir/catch_amalgamated.cpp.obj: CXX_COMPILER__micromodel_tests_unscanned_Debug C$:/Projects/MicroModel/tests/catch_amalgamated.cpp || cmake_object_order_depends_target_micromodel_tests
+  CONFIG = Debug
+  DEP_FILE = tests\CMakeFiles\micromodel_tests.dir\catch_amalgamated.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/Bus -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Devices -IC:/Projects/MicroModel/IO -IC:/Projects/MicroModel/tests
+  OBJECT_DIR = tests\CMakeFiles\micromodel_tests.dir
+  OBJECT_FILE_DIR = tests\CMakeFiles\micromodel_tests.dir
+  TARGET_COMPILE_PDB = tests\CMakeFiles\micromodel_tests.dir\
+  TARGET_PDB = tests\micromodel_tests.pdb
+
+build tests/CMakeFiles/micromodel_tests.dir/__/IO/SerialDevice.cpp.obj: CXX_COMPILER__micromodel_tests_unscanned_Debug C$:/Projects/MicroModel/IO/SerialDevice.cpp || cmake_object_order_depends_target_micromodel_tests
+  CONFIG = Debug
+  DEP_FILE = tests\CMakeFiles\micromodel_tests.dir\__\IO\SerialDevice.cpp.obj.d
+  FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++17 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  INCLUDES = -IC:/Projects/MicroModel/Bus -IC:/Projects/MicroModel/Memory -IC:/Projects/MicroModel/CPU -IC:/Projects/MicroModel/Devices -IC:/Projects/MicroModel/IO -IC:/Projects/MicroModel/tests
+  OBJECT_DIR = tests\CMakeFiles\micromodel_tests.dir
+  OBJECT_FILE_DIR = tests\CMakeFiles\micromodel_tests.dir\__\IO
+  TARGET_COMPILE_PDB = tests\CMakeFiles\micromodel_tests.dir\
+  TARGET_PDB = tests\micromodel_tests.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target micromodel_tests
+
+
+#############################################
+# Link the executable tests\micromodel_tests.exe
+
+build tests/micromodel_tests.exe: CXX_EXECUTABLE_LINKER__micromodel_tests_Debug tests/CMakeFiles/micromodel_tests.dir/test_bus.cpp.obj tests/CMakeFiles/micromodel_tests.dir/test_ram.cpp.obj tests/CMakeFiles/micromodel_tests.dir/test_cpu.cpp.obj tests/CMakeFiles/micromodel_tests.dir/catch_amalgamated.cpp.obj tests/CMakeFiles/micromodel_tests.dir/__/IO/SerialDevice.cpp.obj | Bus/micromodel_bus.lib Memory/micromodel_memory.lib CPU/micromodel_cpu.lib Bus/micromodel_bus.lib || Bus/micromodel_bus.lib CPU/micromodel_cpu.lib Memory/micromodel_memory.lib
+  CONFIG = Debug
+  FLAGS = -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
+  LINK_FLAGS = -Xlinker /subsystem:console -fuse-ld=lld-link
+  LINK_LIBRARIES = Bus/micromodel_bus.lib  Memory/micromodel_memory.lib  CPU/micromodel_cpu.lib  Bus/micromodel_bus.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames
+  OBJECT_DIR = tests\CMakeFiles\micromodel_tests.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = tests\CMakeFiles\micromodel_tests.dir\
+  TARGET_FILE = tests\micromodel_tests.exe
+  TARGET_IMPLIB = tests\micromodel_tests.lib
+  TARGET_PDB = tests\micromodel_tests.pdb
+
+
+#############################################
+# Utility command for test
+
+build tests/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\tests && C:\CMake\bin\ctest.exe "
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build tests/test: phony tests/CMakeFiles/test.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\tests && C:\CMake\bin\cmake-gui.exe -SC:\Projects\MicroModel -BC:\Projects\MicroModel\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build tests/edit_cache: phony tests/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Projects\MicroModel\build\tests && C:\CMake\bin\cmake.exe --regenerate-during-build -SC:\Projects\MicroModel -BC:\Projects\MicroModel\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/rebuild_cache: phony tests/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
 # Target aliases.
 
 build micromodel: phony micromodel.exe
@@ -381,9 +650,17 @@ build micromodel_cpu: phony CPU/micromodel_cpu.lib
 
 build micromodel_cpu.lib: phony CPU/micromodel_cpu.lib
 
+build micromodel_io: phony IO/micromodel_io.lib
+
+build micromodel_io.lib: phony IO/micromodel_io.lib
+
 build micromodel_memory: phony Memory/micromodel_memory.lib
 
 build micromodel_memory.lib: phony Memory/micromodel_memory.lib
+
+build micromodel_tests: phony tests/micromodel_tests.exe
+
+build micromodel_tests.exe: phony tests/micromodel_tests.exe
 
 build micromodel_vm: phony MicroVM/micromodel_vm.lib
 
@@ -397,7 +674,7 @@ build micromodel_vm.lib: phony MicroVM/micromodel_vm.lib
 #############################################
 # Folder: C:/Projects/MicroModel/build
 
-build all: phony micromodel.exe Bus/all Memory/all CPU/all MicroVM/all
+build all: phony micromodel.exe Bus/all Memory/all CPU/all MicroVM/all IO/all tests/all
 
 # =============================================================================
 
@@ -416,6 +693,13 @@ build CPU/all: phony CPU/micromodel_cpu.lib
 # =============================================================================
 
 #############################################
+# Folder: C:/Projects/MicroModel/build/IO
+
+build IO/all: phony IO/micromodel_io.lib
+
+# =============================================================================
+
+#############################################
 # Folder: C:/Projects/MicroModel/build/Memory
 
 build Memory/all: phony Memory/micromodel_memory.lib
@@ -428,20 +712,27 @@ build Memory/all: phony Memory/micromodel_memory.lib
 build MicroVM/all: phony MicroVM/micromodel_vm.lib
 
 # =============================================================================
+
+#############################################
+# Folder: C:/Projects/MicroModel/build/tests
+
+build tests/all: phony tests/micromodel_tests.exe
+
+# =============================================================================
 # Built-in targets
 
 
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja C$:/Projects/MicroModel/build/cmake_install.cmake C$:/Projects/MicroModel/build/Bus/cmake_install.cmake C$:/Projects/MicroModel/build/Memory/cmake_install.cmake C$:/Projects/MicroModel/build/CPU/cmake_install.cmake C$:/Projects/MicroModel/build/MicroVM/cmake_install.cmake: RERUN_CMAKE | C$:/CMake/share/cmake-4.0/Modules/CMakeCXXInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeRCInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Initialize.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/WindowsPaths.cmake C$:/Projects/MicroModel/Bus/CMakeLists.txt C$:/Projects/MicroModel/CMakeLists.txt C$:/Projects/MicroModel/CPU/CMakeLists.txt C$:/Projects/MicroModel/Memory/CMakeLists.txt C$:/Projects/MicroModel/MicroVM/CMakeLists.txt CMakeCache.txt CMakeFiles/4.0.1/CMakeCXXCompiler.cmake CMakeFiles/4.0.1/CMakeRCCompiler.cmake CMakeFiles/4.0.1/CMakeSystem.cmake
+build build.ninja C$:/Projects/MicroModel/build/cmake_install.cmake C$:/Projects/MicroModel/build/Bus/cmake_install.cmake C$:/Projects/MicroModel/build/Memory/cmake_install.cmake C$:/Projects/MicroModel/build/CPU/cmake_install.cmake C$:/Projects/MicroModel/build/MicroVM/cmake_install.cmake C$:/Projects/MicroModel/build/IO/cmake_install.cmake C$:/Projects/MicroModel/build/tests/cmake_install.cmake C$:/Projects/MicroModel/build/CTestTestfile.cmake C$:/Projects/MicroModel/build/tests/CTestTestfile.cmake: RERUN_CMAKE | C$:/CMake/share/cmake-4.0/Modules/CMakeCXXInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeRCInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Initialize.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/WindowsPaths.cmake C$:/Projects/MicroModel/Bus/CMakeLists.txt C$:/Projects/MicroModel/CMakeLists.txt C$:/Projects/MicroModel/CPU/CMakeLists.txt C$:/Projects/MicroModel/IO/CMakeLists.txt C$:/Projects/MicroModel/Memory/CMakeLists.txt C$:/Projects/MicroModel/MicroVM/CMakeLists.txt C$:/Projects/MicroModel/tests/CMakeLists.txt CMakeCache.txt CMakeFiles/4.0.1/CMakeCXXCompiler.cmake CMakeFiles/4.0.1/CMakeRCCompiler.cmake CMakeFiles/4.0.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/CMake/share/cmake-4.0/Modules/CMakeCXXInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeRCInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Initialize.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/WindowsPaths.cmake C$:/Projects/MicroModel/Bus/CMakeLists.txt C$:/Projects/MicroModel/CMakeLists.txt C$:/Projects/MicroModel/CPU/CMakeLists.txt C$:/Projects/MicroModel/Memory/CMakeLists.txt C$:/Projects/MicroModel/MicroVM/CMakeLists.txt CMakeCache.txt CMakeFiles/4.0.1/CMakeCXXCompiler.cmake CMakeFiles/4.0.1/CMakeRCCompiler.cmake CMakeFiles/4.0.1/CMakeSystem.cmake: phony
+build C$:/CMake/share/cmake-4.0/Modules/CMakeCXXInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeRCInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake C$:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Compiler/Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Linker/MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-LLD.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang-CXX.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Clang.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows-Initialize.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/Windows.cmake C$:/CMake/share/cmake-4.0/Modules/Platform/WindowsPaths.cmake C$:/Projects/MicroModel/Bus/CMakeLists.txt C$:/Projects/MicroModel/CMakeLists.txt C$:/Projects/MicroModel/CPU/CMakeLists.txt C$:/Projects/MicroModel/IO/CMakeLists.txt C$:/Projects/MicroModel/Memory/CMakeLists.txt C$:/Projects/MicroModel/MicroVM/CMakeLists.txt C$:/Projects/MicroModel/tests/CMakeLists.txt CMakeCache.txt CMakeFiles/4.0.1/CMakeCXXCompiler.cmake CMakeFiles/4.0.1/CMakeRCCompiler.cmake CMakeFiles/4.0.1/CMakeSystem.cmake: phony
 
 
 #############################################
