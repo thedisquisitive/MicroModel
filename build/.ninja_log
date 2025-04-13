@@ -1,0 +1,11 @@
+# ninja log v6
+17	1093	7662767767562869	MicroVM/CMakeFiles/micromodel_vm.dir/MicroVM.cpp.obj	c56f9c4ebc6c112a
+12	1120	7662767767517808	Memory/CMakeFiles/micromodel_memory.dir/RAMDevice.cpp.obj	8fd357ebb61d7672
+22	1240	7662767767622883	CMakeFiles/micromodel.dir/main.cpp.obj	42522ecf2f1daf8b
+2	1250	7662767767422628	Bus/CMakeFiles/micromodel_bus.dir/Bus.cpp.obj	153191b63339e7f7
+8	1261	7662767767477796	CPU/CMakeFiles/micromodel_cpu.dir/CPU_4004.cpp.obj	1ad05e165d9bc327
+1250	1412	7662767779900853	Bus/micromodel_bus.lib	4bf04bb98337cede
+1412	1482	7662767781510974	CPU/micromodel_cpu.lib	5c6a69235e3af7a0
+1419	1490	7662767781586047	Memory/micromodel_memory.lib	ed01a742c3223677
+1482	1553	7662767782222162	MicroVM/micromodel_vm.lib	aef5586f4f360573
+1553	1691	7662767782923111	micromodel.exe	557138b4fabfcf78
